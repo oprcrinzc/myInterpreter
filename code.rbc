@@ -1,0 +1,4 @@
+motor 0, 100
+motor 1, 100
+servo 0, 0
+servo 1, 90
