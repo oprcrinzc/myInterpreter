@@ -40,5 +40,10 @@ func isIn[T comparable](what T, set []T) bool {
 	return false
 }
 func isInVar(varRef *[]Variable, what string) (bool, *Variable) {
-
+	for _, e := range *varRef {
+		if e.Name == what {
+			return true, &e
+		}
+	}
+	return false, nil
 }

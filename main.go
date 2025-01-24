@@ -41,6 +41,7 @@ func Execute(ins [][]byte) {
 			nextIndex = nil
 		}
 		if isIn(string(e), commands) {
+			var p1, p2 interface{}
 			command := string(e)
 			if command == "set" {
 				p1 := string(ins[i+1])
@@ -58,7 +59,9 @@ func Execute(ins [][]byte) {
 			if command == "motor" {
 				p1, err := strconv.Atoi(string(ins[i+1]))
 				if isErr(err) {
-					if string(ins[i+1])
+					if b, r := isInVar(&variables, string(ins[i+1])); b {
+						p1 := r.Value
+					}
 				}
 				p2, err := strconv.Atoi(string(ins[i+2]))
 				check(err)
