@@ -3,28 +3,13 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 var fileExtension string = ".rbc"
 var instructionSet [][]byte
 var commands []string = []string{"motor", "servo", "set"}
 var variables []Variable
-
-func check(e error) {
-	if e != nil {
-		fmt.Println("Error!: " + e.Error())
-		panic(e)
-	}
-}
-
-func isIn[T comparable](what T, set []T) bool {
-	for _, e := range set {
-		if e == what {
-			return true
-		}
-	}
-	return false
-}
 
 func LoadInstructionSet(data []byte, where *[][]byte) {
 	var instruction []byte
@@ -50,27 +35,47 @@ func Execute(ins [][]byte) {
 	var nextIndex *int32
 	for i, e := range ins {
 		if nextIndex != nil && i < int(*nextIndex) {
-			fmt.Println(fmt.Sprintf("wait fot %d, %d", int(*nextIndex), i))
+			// fmt.Printf("wait for %d, %d \n", int(*nextIndex), i)
 			continue
 		} else {
 			nextIndex = nil
 		}
-		if nextIndex == nil && isIn(string(e), commands) {
-			nextIndex = nil
+		if isIn(string(e), commands) {
 			command := string(e)
-			if command == "motor" {
-				// motor(, int(ins[i+2]))
-				fmt.Print(string(ins[i+1]))
-				fmt.Print(" ")
-				fmt.Println(string(ins[i+2]))
-				var a int32 = int32(i + 3)
+			if command == "set" {
+				p1 := string(ins[i+1])
+				p2, err := strconv.Atoi(string(ins[i+2]))
+				if isErr(err) {
+					p2 := string(ins[i+2])
+					makeVar(&variables, p1, p2)
+				} else {
+					makeVar(&variables, p1, p2)
+				}
+				a := int32(i + 3)
 				nextIndex = &a
-				fmt.Println(*nextIndex)
-
+				fmt.Println(variables)
+			}
+			if command == "motor" {
+				p1, err := strconv.Atoi(string(ins[i+1]))
+				if isErr(err) {
+					if string(ins[i+1])
+				}
+				p2, err := strconv.Atoi(string(ins[i+2]))
+				check(err)
+				motor(p1, p2)
+				a := int32(i + 3)
+				nextIndex = &a
+			}
+			if command == "servo" {
+				p1, err := strconv.Atoi(string(ins[i+1]))
+				check(err)
+				p2, err := strconv.Atoi(string(ins[i+2]))
+				check(err)
+				servo(p1, p2)
+				a := int32(i + 3)
+				nextIndex = &a
 			}
 		}
-		// fmt.Print(i)
-		// fmt.Println(string(e))
 	}
 }
 
