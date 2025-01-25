@@ -1,7 +1,7 @@
 set   a    10
+wait  inst 1 //skip 1 instruction
 motor 0    100
 motor 1    100
-wait  inst 1
-wait  ms   1000
+wait  s    2
 servo 0    a
 servo 1    a
