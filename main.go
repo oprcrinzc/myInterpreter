@@ -55,9 +55,8 @@ func Execute(ins [][]byte) {
 				nextIndex = &a
 				fmt.Println(variables)
 			}
-			if command == "motor" {
+			if command == "motor" || command == "servo" {
 				var p1i, p2i int
-				// var p1s, p2s string
 				var p1e, p2e error
 				p1i, p1e = strconv.Atoi(string(ins[i+1]))
 				if isErr(p1e) {
@@ -73,16 +72,11 @@ func Execute(ins [][]byte) {
 						p2i = r.Value.(int)
 					}
 				}
-				motor(p1i, p2i)
-				a := int32(i + 3)
-				nextIndex = &a
-			}
-			if command == "servo" {
-				p1, err := strconv.Atoi(string(ins[i+1]))
-				check(err)
-				p2, err := strconv.Atoi(string(ins[i+2]))
-				check(err)
-				servo(p1, p2)
+				if command == "motor" {
+					motor(p1i, p2i)
+				} else {
+					servo(p1i, p2i)
+				}
 				a := int32(i + 3)
 				nextIndex = &a
 			}
