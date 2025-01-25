@@ -1,5 +1,7 @@
-motor 0 100
-motor 1 100
-set   a 10
-servo 0 a
-servo 1 a
+set   a    10
+motor 0    100
+motor 1    100
+wait  inst 1
+wait  ms   1000
+servo 0    a
+servo 1    a
