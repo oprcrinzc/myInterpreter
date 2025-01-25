@@ -1,5 +1,6 @@
 set   a    10
-wait  inst 1 //skip 1 instruction
+set   b    D1
+wait  inst 1
 motor 0    100
 motor 1    100
 wait  s    2
